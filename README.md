@@ -75,9 +75,13 @@ After establishing a connection, commands are issued directly over the telnet cl
 All commands are terminated with CRLF or NL:
 
   `LOGIN`  Begin a session with your name: `LOGIN [username]`
+  
   `LOGOUT` End the session: `LOGOUT`
+  
   `JOIN`   Open a chat room: `JOIN #[room]`
+  
   `PART`   Leave a chat room: `PART #[room]`
+  
   `MSG`    Send a message to a chat room: `MSG #[room] [text]`
 
 Server shutdown is using Ctrl+C at the console or terminating Java directly.

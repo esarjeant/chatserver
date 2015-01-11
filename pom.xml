@@ -78,16 +78,16 @@
                     <dockerHost>http://192.168.66.195:2375</dockerHost>
                     <images>
 
-                        <image>
-                            <alias>cassandra</alias>
-                            <name>spotify/cassandra</name>
-                            <run>
-                                <wait>
-                                    <log>database system is ready to accept connections</log>
-                                    <time>20000</time>
-                                </wait>
-                            </run>
-                        </image>
+                        <!--<image>-->
+                            <!--<alias>cassandra</alias>-->
+                            <!--<name>spotify/cassandra</name>-->
+                            <!--<run>-->
+                                <!--<wait>-->
+                                    <!--<log>database system is ready to accept connections</log>-->
+                                    <!--<time>20000</time>-->
+                                <!--</wait>-->
+                            <!--</run>-->
+                        <!--</image>-->
 
                         <image>
 
@@ -110,9 +110,9 @@
                                 <wait>
                                     <time>10000</time>
                                 </wait>
-                                <links>
-                                    <link>cassandra</link>
-                                </links>
+                                <!--<links>-->
+                                    <!--<link>cassandra</link>-->
+                                <!--</links>-->
                             </run>
 
                         </image>

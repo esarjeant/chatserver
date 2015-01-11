@@ -28,16 +28,40 @@ There is also a Maven exec target which can be invoked:
 
 Running Docker
 --------------
-The installation and configuration of your docker environment is somewhat outside
+The installation and configuration of a Docker environment is somewhat outside
 the scope of this document. For general configuration advise, you may wish to start
 here:
 
 <http://docker.com>
 
-Once Docker is setup, the Maven docker plugin may be used to build an instance of
-container with Java support and then deploy the Chat Server application to this 
+Once Docker is setup, the maven build may be used to deploy an instance of
+container with Java support and then install the Chat Server application to this 
 instance.
 
+To execute:
+
+`mvn deploy`
+
+Once deployed, `mvn ps` should show a running instance. You may also start the container
+with:
+
+`mvn docker:start`
+
+When the Docker container is running, you may use the docker command to determine what
+containers are currently online:
+
+`docker ps`
+
+This should return something like the following:
+
+`CONTAINER ID        IMAGE                                COMMAND                CREATED             STATUS              PORTS                     NAMES`
+`f2b2aab3d877        sarjeant/chatserver:0.0.1-SNAPSHOT   "java -jar /maven/ch   6 seconds ago       Up 5 seconds        0.0.0.0:49166->8888/tcp   evil_stallman`
+
+Use the PORTS column to determine what the Chat Server is listening on; in this example it is
+port #49166. To communicate to this instance, assuming everything is running on your local machine - 
+at a command prompt:
+
+`telnet localhost 49166`
 
 
 Connecting to the Server

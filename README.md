@@ -1,5 +1,5 @@
-Confabulator - Server
-=====================
+Java Chat Server
+================
 
 AUTHOR: Eric W. Sarjeant <eric@sarjeant.com>  
 DATE:   January 2006

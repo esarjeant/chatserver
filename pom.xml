@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.sarjeant</groupId>
+    <artifactId>chatserver</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.10</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+
+            <!--<plugin>-->
+                <!--<groupId>org.apache.maven.plugins</groupId>-->
+                <!--<artifactId>maven-enforcer-plugin</artifactId>-->
+                <!--<executions>-->
+                    <!--<execution>-->
+                        <!--<id>enforce-versions</id>-->
+                        <!--<goals>-->
+                            <!--<goal>enforce</goal>-->
+                        <!--</goals>-->
+                        <!--<configuration>-->
+                            <!--<rules>-->
+                                <!--<requireJavaVersion>-->
+                                    <!--<version>1.7</version>-->
+                                <!--</requireJavaVersion>-->
+                            <!--</rules>-->
+                        <!--</configuration>-->
+                    <!--</execution>-->
+                <!--</executions>-->
+            <!--</plugin>-->
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>org.sarjeant.chat.ChatServer</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.2.1</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.sarjeant</groupId>
+                        <artifactId>chatserver</artifactId>
+                        <version>0.1-SNAPSHOT</version>
+                        <type>jar</type>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <mainClass>org.sarjeant.chat.ChatServer</mainClass>
+                    <includePluginDependencies>true</includePluginDependencies>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.jolokia</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.10.5</version>
+                <configuration>
+                    <dockerHost>http://192.168.66.195:2375</dockerHost>
+                    <images>
+
+                        <image>
+                            <alias>cassandra</alias>
+                            <name>spotify/cassandra</name>
+                            <run>
+                                <wait>
+                                    <log>database system is ready to accept connections</log>
+                                    <time>20000</time>
+                                </wait>
+                            </run>
+                        </image>
+
+                        <image>
+
+                            <alias>chatServer</alias>
+                            <name>sarjeant/${project.artifactId}:${project.version}</name>
+
+                            <build>
+                                <from>java:8</from>
+                                <assemblyDescriptor>${project.build.sourceDirectory}/../resources/docker-assembly.xml</assemblyDescriptor>
+                                <ports>
+                                    <port>8888</port>
+                                </ports>
+                                <command>java -jar /maven/chatserver.jar</command>
+                            </build>
+
+                            <run>
+                                <ports>
+                                    <port>chat.port:8888</port>
+                                </ports>
+                                <wait>
+                                    <time>10000</time>
+                                </wait>
+                                <links>
+                                    <link>cassandra</link>
+                                </links>
+                            </run>
+
+                        </image>
+
+                    </images>
+                </configuration>
+
+                <!-- Hooking into the lifecycle -->
+                <executions>
+                    <execution>
+                        <id>start</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>build</goal>
+                            <goal>start</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>stop</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>stop</goal>
+                        </goals>
+                    </execution>
+                </executions>
+
+            </plugin>
+
+        </plugins>
+    </build>
+
+</project>

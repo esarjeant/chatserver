@@ -44,7 +44,7 @@ public class ChatServer
 			}
 		}
 		
-		// start server listener
+		// start server listener.. now start it baby
 		ChatServerListener csl = new ChatServerListener(port);
 		Thread thmain = new Thread(csl);
 		
@@ -52,7 +52,7 @@ public class ChatServer
 		ChatServerShutdown css = new ChatServerShutdown(csl);
 		Runtime.getRuntime().addShutdownHook(new Thread(css));
 		
-		// begin running...
+		// begin running...yahooo....i m a robot...
 		thmain.start();
 		
 	}

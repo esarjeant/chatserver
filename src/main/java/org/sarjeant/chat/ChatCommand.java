@@ -4,7 +4,7 @@ package org.sarjeant.chat;
  * Command set for the chat server. This enumerator describes the available set
  * of commands for chat.
  * 
- * @author $Author$
+ * @author $Tulika$
  * @version $Revision$
  */
 enum ChatCommand {
